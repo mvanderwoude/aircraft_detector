@@ -1,17 +1,13 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar 17 08:24:08 2020
-
-@author: mark
-"""
+"""Edited from https://github.com/Bjarten/early-stopping-pytorch."""
 
 import numpy as np
 import torch
 
+
 class EarlyStopping:
     """Early stops the training if validation loss doesn't improve after a given patience."""
-    def __init__(self, patience=7, verbose=False, delta=0, output_fp='checkpoint.pt'):
+
+    def __init__(self, patience=7, verbose=False, delta=0, output_fp="checkpoint.pt"):
         """
         Args:
             patience (int): How long to wait after last time validation loss improved.
@@ -28,7 +24,7 @@ class EarlyStopping:
         self.early_stop = False
         self.val_loss_min = np.Inf
         self.delta = delta
-        
+
         self.output_fp = output_fp
 
     def __call__(self, val_loss, model):
@@ -41,7 +37,9 @@ class EarlyStopping:
         elif score < self.best_score + self.delta:
             self.counter += 1
             if self.verbose:
-                print(f'Validation loss increased ({self.val_loss_min:.6f} --> {val_loss:.6f}). Counter: {self.counter} out of {self.patience}')
+                print(
+                    f"Validation loss increased ({self.val_loss_min:.6f} --> {val_loss:.6f}). Counter: {self.counter} out of {self.patience}"
+                )
             if self.counter >= self.patience:
                 self.early_stop = True
         else:
@@ -50,8 +48,10 @@ class EarlyStopping:
             self.counter = 0
 
     def save_checkpoint(self, val_loss, model):
-        '''Saves model when validation loss decrease.'''
+        """Save model when validation loss decreases."""
         if self.verbose:
-            print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
+            print(
+                f"Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ..."
+            )
         torch.save(model.state_dict(), self.output_fp)
         self.val_loss_min = val_loss
