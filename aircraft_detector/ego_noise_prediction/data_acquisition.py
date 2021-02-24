@@ -17,7 +17,7 @@ import time
 import paramiko
 import matplotlib.pyplot as plt
 
-from ..utils import plot_helper as ph
+import aircraft_detector.utils.plot_helper as ph
 
 
 class DataAcquisition:
